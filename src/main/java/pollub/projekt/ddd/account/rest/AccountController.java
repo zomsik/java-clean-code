@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pollub.projekt.ddd.account.domain.exception.AccountErrorResponseBody;
 import pollub.projekt.ddd.account.domain.exception.AccountException;
-import pollub.projekt.ddd.account.rest.dto.*;
+import pollub.projekt.ddd.account.rest.dto.AccountErrorResponse;
+import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
+import pollub.projekt.ddd.account.rest.dto.RegisterRequestDto;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
+import pollub.projekt.ddd.common.patterns.factory.ResponseInterface;
 
 import java.time.LocalDateTime;
 
@@ -39,14 +42,14 @@ public class AccountController {
 
 
     @PostMapping(path = "/login", consumes={"application/json"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto request) {
+    public ResponseEntity<ResponseInterface> login(@RequestBody @Valid LoginRequestDto request) {
 
         return ResponseEntity.ok(accountFacade.login(request));
     }
 
     @PostMapping(path = "/register", consumes={"application/json"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto request) {
+    public ResponseEntity<ResponseInterface> register(@RequestBody @Valid RegisterRequestDto request) {
 
         return ResponseEntity.ok(accountFacade.register(request));
     }

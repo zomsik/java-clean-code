@@ -2,18 +2,17 @@ package pollub.projekt.ddd.common.application.account;
 
 
 import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
-import pollub.projekt.ddd.account.rest.dto.LoginResponseDto;
 import pollub.projekt.ddd.account.rest.dto.RegisterRequestDto;
-import pollub.projekt.ddd.account.rest.dto.RegisterResponseDto;
+import pollub.projekt.ddd.common.patterns.factory.ResponseInterface;
 
 import java.time.LocalDateTime;
 
 public interface AccountFacade {
 
 
-    LoginResponseDto login(LoginRequestDto request);
+    ResponseInterface login(LoginRequestDto request);
 
-    RegisterResponseDto register(RegisterRequestDto request);
+    ResponseInterface register(RegisterRequestDto request);
 
     LocalDateTime getRegisterDateByLogin(String login);
 

@@ -10,6 +10,9 @@ import pollub.projekt.ddd.account.domain.exception.AccountException;
 import pollub.projekt.ddd.account.rest.dto.RegisterRequestDto;
 import pollub.projekt.ddd.account.rest.dto.RegisterResponseDto;
 import pollub.projekt.ddd.common.application.time.TimeProvider;
+import pollub.projekt.ddd.common.patterns.factory.ResponseEnum;
+import pollub.projekt.ddd.common.patterns.factory.ResponseFactory;
+import pollub.projekt.ddd.common.patterns.factory.ResponseInterface;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 
 @Service
@@ -25,7 +28,7 @@ public class AccountRegisterService {
         this.timeProvider = timeProvider;
     }
 
-    public RegisterResponseDto register (RegisterRequestDto request) {
+    public ResponseInterface register (RegisterRequestDto request) {
 
         if (!accountRepository.existsByLogin(request.getLogin())) {
 
@@ -49,10 +52,8 @@ public class AccountRegisterService {
                             .token(jwt)
                             .build();
                 } else {
-                    return RegisterResponseDto.builder()
-                            .success(false)
-                            .message("Błąd logowania po rejestracji")
-                            .build();
+
+                    return ResponseFactory.createResponse(ResponseEnum.REGISTER, false, "Błąd logowania po rejestracji" , null);
                 }
             } else {
                 throw new AccountException(AccountErrorCodes.REGISTER_ERROR);

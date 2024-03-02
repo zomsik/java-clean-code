@@ -6,12 +6,22 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 import org.joda.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 
 public class JwtUtil {
+
+    //@Value("${custom.jwt.secret}")
+    private final String secretKey = "T5XnG1eMelkRZRTggV3DiyTRYKz0hfkwMVKfKstQbhVL60Sc";
+
+    //@Value("${custom.jwt.issuer}")
+    private final String issuer = "ProjectApplicationServer";
+
+    //@Value("${custom.jwt.expiration}")
+    private final String expMillis = "90000";
+
+
 
 
     /* Tydzień 1, Wzorzec Singleton
@@ -30,16 +40,6 @@ public class JwtUtil {
         }
         return instance;
     }
-
-
-    @Value("${custom.jwt.secret}")
-    private String secretKey;
-
-    @Value("${custom.jwt.issuer}")
-    private String issuer;
-
-    @Value("${custom.jwt.expiration}")
-    private String expMillis;
 
 
     public String createJWT(String subject) {

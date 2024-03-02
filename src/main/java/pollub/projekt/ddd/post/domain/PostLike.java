@@ -4,13 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pollub.projekt.ddd.account.domain.Account;
+import pollub.projekt.ddd.common.patterns.PrototypePattern;
 import pollub.projekt.ddd.post.infrastructure.jpa.PostLikesEntity;
 
 import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class PostLike {
+public class PostLike implements PrototypePattern {
 
     private Integer id;
     private Account account;
@@ -24,6 +25,10 @@ public class PostLike {
                 .post(this.post.translateId())
                 .createDate(this.createDate)
                 .build();
+    }
+
+    public Object clone() {
+        return new PostLike(this.id, this.account, this.post, this.createDate);
     }
 
 

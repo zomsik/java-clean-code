@@ -7,6 +7,9 @@ import pollub.projekt.ddd.account.domain.exception.AccountErrorCodes;
 import pollub.projekt.ddd.account.domain.exception.AccountException;
 import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
 import pollub.projekt.ddd.account.rest.dto.LoginResponseDto;
+import pollub.projekt.ddd.common.patterns.factory.ResponseEnum;
+import pollub.projekt.ddd.common.patterns.factory.ResponseFactory;
+import pollub.projekt.ddd.common.patterns.factory.ResponseInterface;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 
 @Service
@@ -20,7 +23,7 @@ public class AccountLoginService {
         this.accountRepository = accountRepository;
     }
 
-    public LoginResponseDto login(LoginRequestDto request) {
+    public ResponseInterface login(LoginRequestDto request) {
 
 
 
@@ -30,10 +33,8 @@ public class AccountLoginService {
             if (BCrypt.checkpw(request.getPassword(), passHash)) {
                 String jwt = jwtUtil.createJWT(request.getLogin());
                 if (jwt != null) {
-                    return LoginResponseDto.builder()
-                            .success(true)
-                            .token(jwt)
-                            .build();
+                    return ResponseFactory.createResponse(ResponseEnum.LOGIN, true, null , jwt);
+
                 } else {
 
 
