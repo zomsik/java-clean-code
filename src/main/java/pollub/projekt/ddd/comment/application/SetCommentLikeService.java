@@ -1,6 +1,5 @@
 package pollub.projekt.ddd.comment.application;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.comment.domain.Comment;
@@ -13,16 +12,11 @@ import pollub.projekt.ddd.comment.rest.dto.CreateCommentRequestDto;
 import pollub.projekt.ddd.comment.rest.dto.CreateCommentResponseDto;
 import pollub.projekt.ddd.comment.rest.dto.LikeResponseDto;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
-import pollub.projekt.ddd.common.application.comment.CommentDto;
 import pollub.projekt.ddd.common.application.time.TimeProvider;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 import pollub.projekt.ddd.post.domain.Post;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
 public class SetCommentLikeService {
 
     private final CommentRepository commentRepository;
@@ -31,26 +25,15 @@ public class SetCommentLikeService {
     private final JwtUtil jwtUtil;
     private final TimeProvider timeProvider;
 
-    public List<CommentDto> getComments(Integer postId, String jwt) {
-        if (postId == null) {
-            return new ArrayList<>();
-        }
-
-        List<CommentDto> commentsList = commentRepository.getComments(postId).stream().map(Comment::translateToDto).toList();
-
-        if (jwtUtil.valid(jwt)) {
-            String user = jwtUtil.getUser(jwt);
-            Integer accountId = accountFacade.getIdByLogin(user);
-
-            for (CommentDto comment : commentsList) {
-                if (commentRepository.isCommentLikedByUser(comment.getId(), accountId))
-                    comment.setLiked(true);
-            }
-
-        }
-
-        return commentsList;
+    public SetCommentLikeService(CommentRepository commentRepository, CommentLikesRepository commentLikesRepository,
+                                 AccountFacade accountFacade, TimeProvider timeProvider) {
+        this.commentRepository = commentRepository;
+        this.commentLikesRepository = commentLikesRepository;
+        this.accountFacade = accountFacade;
+        this.jwtUtil = JwtUtil.getInstance();
+        this.timeProvider = timeProvider;
     }
+
 
     public LikeResponseDto likeComment(Integer commentId, String jwt) {
         if (jwtUtil.valid(jwt)) {
@@ -61,11 +44,19 @@ public class SetCommentLikeService {
                 throw new CommentException(CommentErrorCodes.ALREADY_LIKED);
             }
 
-            CommentLike commentLike = CommentLike.builder()
-                    .comment(new Comment(commentId))
-                    .account(new Account(accountId))
-                    .createDate(timeProvider.currentDateTime())
+            /* Tydzień 1, Wzorzec Builder
+
+                Builder upraszcza tworzenie obiektów danej klasy, możemy w kolejnych setterach ustawiać po kolei
+                kolejne pola danej klasy, nie wymagany jest dzięki temu wieloargumentowy konstruktor,
+                zwłaszcza gdy nie chcemy ustawiać wszystkich pól.
+
+            Koniec, Tydzień 1, Wzorzec Builder */
+            CommentLike commentLike = new CommentLike.CommentLikeBuilder()
+                    .setComment(new Comment(accountId))
+                    .setAccount(new Account(accountId))
+                    .setCreateDate(timeProvider.currentDateTime())
                     .build();
+
 
             commentLike = commentLikesRepository.save(commentLike);
 

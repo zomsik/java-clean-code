@@ -1,6 +1,5 @@
 package pollub.projekt.ddd.account.application;
 
-import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.Account;
@@ -14,12 +13,17 @@ import pollub.projekt.ddd.common.application.time.TimeProvider;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 
 @Service
-@AllArgsConstructor
 public class AccountRegisterService {
 
     private final JwtUtil jwtUtil;
     private final AccountRepository accountRepository;
     private final TimeProvider timeProvider;
+
+    public AccountRegisterService(AccountRepository accountRepository, TimeProvider timeProvider) {
+        this.jwtUtil = JwtUtil.getInstance();
+        this.accountRepository = accountRepository;
+        this.timeProvider = timeProvider;
+    }
 
     public RegisterResponseDto register (RegisterRequestDto request) {
 

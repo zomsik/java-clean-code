@@ -1,6 +1,5 @@
 package pollub.projekt.ddd.account.application;
 
-import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.AccountRepository;
@@ -11,11 +10,16 @@ import pollub.projekt.ddd.account.rest.dto.LoginResponseDto;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 
 @Service
-@AllArgsConstructor
 public class AccountLoginService {
 
     private final JwtUtil jwtUtil;
     private final AccountRepository accountRepository;
+
+    public AccountLoginService(AccountRepository accountRepository) {
+        this.jwtUtil = JwtUtil.getInstance();
+        this.accountRepository = accountRepository;
+    }
+
     public LoginResponseDto login(LoginRequestDto request) {
 
 
@@ -31,6 +35,8 @@ public class AccountLoginService {
                             .token(jwt)
                             .build();
                 } else {
+
+
                     return LoginResponseDto.builder()
                             .success(false)
                             .message("Błąd logowania")

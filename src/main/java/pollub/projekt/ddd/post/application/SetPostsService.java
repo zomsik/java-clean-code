@@ -1,6 +1,5 @@
 package pollub.projekt.ddd.post.application;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
@@ -14,7 +13,6 @@ import pollub.projekt.ddd.post.rest.dto.CreatePostResponseDto;
 import pollub.projekt.ddd.post.rest.dto.LikeResponseDto;
 
 @Service
-@RequiredArgsConstructor
 public class SetPostsService {
 
     private final AccountFacade accountFacade;
@@ -22,6 +20,15 @@ public class SetPostsService {
     private final PostLikesRepository postLikesRepository;
     private final JwtUtil jwtUtil;
     private final TimeProvider timeProvider;
+
+    public SetPostsService(AccountFacade accountFacade, PostRepository postRepository,
+                           PostLikesRepository postLikesRepository, TimeProvider timeProvider) {
+        this.accountFacade = accountFacade;
+        this.postRepository = postRepository;
+        this.postLikesRepository = postLikesRepository;
+        this.jwtUtil = JwtUtil.getInstance();
+        this.timeProvider = timeProvider;
+    }
 
     public LikeResponseDto likePost(Integer postId, String jwt) {
         if (jwtUtil.valid(jwt)) {

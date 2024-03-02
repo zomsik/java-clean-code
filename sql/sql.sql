@@ -114,11 +114,12 @@ INSERT INTO public.category(id, name) values (9, 'rozrywka');
 INSERT INTO public.category(id, name) values (10, 'gospodarka');
 
 
-INSERT INTO public.account(id, username, password, email, role, birth_date, register_date)  values (1, 'zomsik', 'test', 'test@gmai.com', '3', '2000-02-02', '2023-02-02');
+--problem z indeksami tworzyć normalnie
+--INSERT INTO public.account(id, username, password, email, role, birth_date, register_date)  values (1, 'zomsik', 'test', 'test@gmai.com', '3', '2000-02-02', '2023-02-02');
 
-INSERT INTO public.post(id, account_id, text, category_id, image, create_date, deleted)  values (1, 1, 'test test test test', 1, null, '2023-02-02', false);
+--INSERT INTO public.post(id, account_id, text, category_id, image, create_date, deleted)  values (1, 1, 'test test test test', 1, null, '2023-02-02', false);
 
-INSERT INTO public.comment(id, account_id, post_id, text, create_date, deleted)  values (1, 1, 1, 'Komentarz 1', '2023-02-02', false);
-INSERT INTO public.comment(id, account_id, post_id, text, create_date, deleted)  values (2, 1, 1, 'Komentarz 2', '2023-02-02', false);
+--INSERT INTO public.comment(id, account_id, post_id, text, create_date, deleted)  values (1, 1, 1, 'Komentarz 1', '2023-02-02', false);
+--INSERT INTO public.comment(id, account_id, post_id, text, create_date, deleted)  values (2, 1, 1, 'Komentarz 2', '2023-02-02', false);
 
 

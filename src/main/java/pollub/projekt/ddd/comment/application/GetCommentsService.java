@@ -1,6 +1,5 @@
 package pollub.projekt.ddd.comment.application;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.comment.domain.Comment;
 import pollub.projekt.ddd.comment.domain.CommentRepository;
@@ -12,12 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class GetCommentsService {
 
     private final CommentRepository commentRepository;
     private final AccountFacade accountFacade;
     private final JwtUtil jwtUtil;
+
+    public GetCommentsService(CommentRepository commentRepository, AccountFacade accountFacade) {
+        this.commentRepository = commentRepository;
+        this.accountFacade = accountFacade;
+        this.jwtUtil = JwtUtil.getInstance();
+    }
+
     public List<CommentDto> getComments(Integer postId, String jwt) {
         if (postId == null) {
             return new ArrayList<>();

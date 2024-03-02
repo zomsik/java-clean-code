@@ -1,6 +1,5 @@
 package pollub.projekt.ddd.post.application;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
 import pollub.projekt.ddd.common.application.post.PostDto;
@@ -16,12 +15,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
 public class GetPostsService {
 
     private final AccountFacade accountFacade;
     private final PostRepository postRepository;
     private final JwtUtil jwtUtil;
+
+    public GetPostsService(AccountFacade accountFacade, PostRepository postRepository) {
+        this.accountFacade = accountFacade;
+        this.postRepository = postRepository;
+        this.jwtUtil = JwtUtil.getInstance();
+    }
 
     public List<PostDto> getPosts(String category, Integer page, Integer postsPerPage, String jwt) {
 

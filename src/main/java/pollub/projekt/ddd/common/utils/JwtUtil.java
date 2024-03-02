@@ -7,13 +7,30 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 
-@Component
 public class JwtUtil {
+
+
+    /* Tydzień 1, Wzorzec Singleton
+
+    Wzorzec Singleton tworzy jedną instancję danej klasy dla całego projektu. Pierwsze użycie tworzy klasę,
+    a każde kolejne przekazuja już istniejący obiekt zapisany pod zmienną statyczną instance w tej klasie.
+    Pobranie tej samej instancji obiektu  z innej klasy: this.jwtUtil = JwtUtil.getInstance();
+
+    Koniec, Tydzień 1, Wzorzec Singleton */
+
+    private static JwtUtil instance;
+
+    public static JwtUtil getInstance() {
+        if (instance == null) {
+            instance = new JwtUtil();
+        }
+        return instance;
+    }
+
 
     @Value("${custom.jwt.secret}")
     private String secretKey;
