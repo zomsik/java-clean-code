@@ -27,6 +27,7 @@ public class PostLike implements PrototypePattern {
                 .build();
     }
 
+    @Override
     public Object clone() {
         return new PostLike(this.id, this.account, this.post, this.createDate);
     }
