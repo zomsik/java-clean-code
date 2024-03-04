@@ -21,13 +21,13 @@ public class JwtUtil {
 
 
 
-    /* Tydzień 1, Wzorzec Singleton
+    /* Tydzień 2, Wzorzec Singleton
 
     Wzorzec Singleton tworzy jedną instancję danej klasy dla całego projektu. Pierwsze użycie tworzy klasę,
     a każde kolejne przekazuja już istniejący obiekt zapisany pod zmienną statyczną instance w tej klasie.
     Pobranie tej samej instancji obiektu  z innej klasy: this.jwtUtil = JwtUtil.getInstance();
 
-    Koniec, Tydzień 1, Wzorzec Singleton */
+    Koniec, Tydzień 2, Wzorzec Singleton */
 
     private static JwtUtil instance;
 

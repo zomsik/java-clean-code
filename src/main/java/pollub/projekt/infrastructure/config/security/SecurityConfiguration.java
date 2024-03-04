@@ -6,19 +6,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import pollub.projekt.ddd.common.patterns.bridge.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,18 +40,23 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    protected UserDetailsService configure(AuthenticationManagerBuilder auth) {
-        UserDetails user = User
-                .withUsername(username)
-                .password(passwordEncoder().encode(password))
-                .roles("CLIENT").build();
+    protected UserDetailsService configure() {
 
-        UserDetails swagger = User
-                .withUsername(usernameSwagger)
-                .password(passwordEncoder().encode(passwordSwagger))
-                .roles("SWAGGER").build();
+        /* Tydzień 3, Wzorzec Bridge
 
-        return new InMemoryUserDetailsManager(user, swagger);
+        Wzorzec Bridge pozwala na separację abstrakcji od implementacji.
+        Można na nich pracować niezależnie.
+
+        Koniec, Tydzień 3, Wzorzec Bridge */
+
+        UserCreator swaggerUserCreator =new SwaggerUserCreator();
+        AbstractUser swaggerUser =new SwaggerUser(swaggerUserCreator);
+
+        UserCreator clientUserCreator =new ClientUserCreator();
+        AbstractUser clientUser =new ClientUser(clientUserCreator);
+
+        return new InMemoryUserDetailsManager(clientUser.createUser(username, password, passwordEncoder()),
+                swaggerUser.createUser(usernameSwagger, passwordSwagger, passwordEncoder()));
     }
 
     @Bean

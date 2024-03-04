@@ -4,13 +4,13 @@ import pollub.projekt.ddd.account.rest.dto.LoginResponseDto;
 import pollub.projekt.ddd.account.rest.dto.RegisterResponseDto;
 
 
-/* Tydzień 1, Wzorzec Factory
+/* Tydzień 2, Wzorzec Factory
 
     Wzorzec Factory tworzy dla nas obiekty bez konieczności ujawniania szczegółów ich powstawania. W tym przypadku
     tworzone są odpowiedzi serwera z domeny account dla logowania i rejestracji na podstawie przykazania odpowiedniego
     typu z enuma do fabryki
 
-Koniec, Tydzień 1, Wzorzec Factory */
+Koniec, Tydzień 2, Wzorzec Factory */
 
 public class ResponseFactory {
 

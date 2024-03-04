@@ -20,6 +20,7 @@ class JavaNetIpAddressProvider implements IpAddressProvider {
     @Override
     public Optional<String> getIpAddress() {
         try {
+
             return Optional.of(this.getLocalHost().getHostAddress());
         } catch (UnknownHostException e) {
             log.error("Unknown Host. Cannot get IPv4 address");

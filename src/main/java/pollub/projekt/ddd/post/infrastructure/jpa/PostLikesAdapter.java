@@ -17,13 +17,13 @@ public class PostLikesAdapter implements PostLikesRepository {
     @Override
     public PostLike save(PostLike postLike) {
 
-    /* Tydzień 1, Wzorzec Prototype
+    /* Tydzień 2, Wzorzec Prototype
 
         Wzorzec Prototype umożliwia tworzenie nowych obiektów poprzez klonowanie istniejących obiektów.
         Klasy implementują interfejs PrototypePattern, a następnie korzystają z metody clone(), aby utworzyć kopię obiektu.
         Interfejs PrototypePattern zawiera:  Object clone(); co umożliwia zastosowanie w każdej innej klasie (dzięki późniejszemu rzutowaniu)
 
-    Koniec, Tydzień 1, Wzorzec Prototype */
+    Koniec, Tydzień 2, Wzorzec Prototype */
 
         PostLike likeCopy = (PostLike) postLike.clone();
         PostLikesEntity savedLike = postLikesJpaRepository.save(likeCopy.translate());

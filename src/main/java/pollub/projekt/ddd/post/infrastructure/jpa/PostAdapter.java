@@ -10,6 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 
+
+    /* Tydzień 3, Wzorzec Adapter
+
+        Wzorzec Adapter pozwala w prosty sposób na adaptację części domenowej z częścia bazodanową projektu. W adapterze zachodzą
+        głównie translacje obiektów jednej klasy na drugą i spowrotem przy zapisie i odczycie. Spełnia on rolę łącznika.
+
+    Koniec, Tydzień 3, Wzorzec Adapter */
+
 @Repository
 @Primary
 @AllArgsConstructor

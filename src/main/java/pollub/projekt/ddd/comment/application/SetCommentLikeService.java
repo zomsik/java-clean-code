@@ -44,13 +44,13 @@ public class SetCommentLikeService {
                 throw new CommentException(CommentErrorCodes.ALREADY_LIKED);
             }
 
-            /* Tydzień 1, Wzorzec Builder
+            /* Tydzień 2, Wzorzec Builder
 
                 Builder upraszcza tworzenie obiektów danej klasy, możemy w kolejnych setterach ustawiać po kolei
                 kolejne pola danej klasy, nie wymagany jest dzięki temu wieloargumentowy konstruktor,
                 zwłaszcza gdy nie chcemy ustawiać wszystkich pól.
 
-            Koniec, Tydzień 1, Wzorzec Builder */
+            Koniec, Tydzień 2, Wzorzec Builder */
             CommentLike commentLike = new CommentLike.CommentLikeBuilder()
                     .setComment(new Comment(accountId))
                     .setAccount(new Account(accountId))
