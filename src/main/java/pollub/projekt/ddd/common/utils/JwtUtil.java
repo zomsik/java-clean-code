@@ -12,13 +12,10 @@ import java.security.Key;
 
 public class JwtUtil {
 
-    //@Value("${custom.jwt.secret}")
     private final String secretKey = "T5XnG1eMelkRZRTggV3DiyTRYKz0hfkwMVKfKstQbhVL60Sc";
 
-    //@Value("${custom.jwt.issuer}")
     private final String issuer = "ProjectApplicationServer";
 
-    //@Value("${custom.jwt.expiration}")
     private final String expMillis = "90000";
 
 
@@ -39,6 +36,9 @@ public class JwtUtil {
             instance = new JwtUtil();
         }
         return instance;
+    }
+
+    private JwtUtil() {
     }
 
 
