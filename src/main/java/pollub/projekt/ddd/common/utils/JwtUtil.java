@@ -5,18 +5,20 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
+import lombok.Data;
 import org.joda.time.LocalDateTime;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 
+@Data
 public class JwtUtil {
 
-    private final String secretKey = "T5XnG1eMelkRZRTggV3DiyTRYKz0hfkwMVKfKstQbhVL60Sc";
+    private String secretKey = "T5XnG1eMelkRZRTggV3DiyTRYKz0hfkwMVKfKstQbhVL60Sc";
 
-    private final String issuer = "ProjectApplicationServer";
+    private String issuer = "ProjectApplicationServer";
 
-    private final String expMillis = "90000";
+    private String expMillis = "90000";
 
 
 
