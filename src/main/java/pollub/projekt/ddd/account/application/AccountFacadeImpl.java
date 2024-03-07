@@ -15,7 +15,7 @@ public class AccountFacadeImpl implements AccountFacade {
 
     private final GetAccountService getAccountService;
     private final AccountLoginService accountLoginService;
-    private final AccountRegisterService accountRegisterService; //użycie
+    private final AccountRegisterService accountRegisterService;
 
     @Override
     public Response login(LoginRequestDto request) {

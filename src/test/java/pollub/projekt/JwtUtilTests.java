@@ -9,6 +9,12 @@ import pollub.projekt.ddd.common.utils.JwtUtil;
 @UnitTest
 public class JwtUtilTests implements WithAssertions {
 
+    /* Tydzień 13, Testy
+
+        Testy dla wystawiania, walidacji i odczytywania Json Web Token (jwt).
+
+    Koniec, Tydzień 13, Testy */
+
     @Test
     public void getSingletonJwtUtilClassIsNotNull() {
         Assertions.assertNotNull(JwtUtil.getInstance());

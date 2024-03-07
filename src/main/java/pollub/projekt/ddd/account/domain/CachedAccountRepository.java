@@ -8,7 +8,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+/* Tydzień 4, Wzorzec Proxy
 
+ Klasa ta ze wzorcem Proxy służy jako dodatkowa warstwa pośrednicząca - gromadzi i przechowuje wyniki operacji. Eliminuje
+  konieczność ponownego wykonania tych samych operacji. Ten rodzaj Proxy jest szczególnie przydatny w przypadku operacji
+  kosztownych obliczeniowo, jak na przykład pobieranie danych z bazy danych.
+
+Koniec, Tydzień 4, Wzorzec Proxy */
 @Repository
 @Primary
 public class CachedAccountRepository implements AccountRepository {

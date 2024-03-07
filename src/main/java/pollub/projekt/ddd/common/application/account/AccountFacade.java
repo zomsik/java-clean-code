@@ -7,6 +7,13 @@ import pollub.projekt.ddd.account.rest.dto.Response;
 
 import java.time.LocalDateTime;
 
+
+/* Tydzień 4, Wzorzec Facade
+
+ Fasada pełni funkcję dostępu do całej utworzonej domeny. Wzorzec facade ukrywa złożoność i szczegółową implementację
+ funkcjonalności programu. Oferuje innym domenom systemu prosty interfejs do komunikacji.
+
+Koniec, Tydzień 4, Wzorzec Facade */
 public interface AccountFacade {
 
 
