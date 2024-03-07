@@ -1,7 +1,6 @@
 package pollub.projekt.ddd.common.patterns.factory;
 
-import pollub.projekt.ddd.account.rest.dto.LoginResponseDto;
-import pollub.projekt.ddd.account.rest.dto.RegisterResponseDto;
+import pollub.projekt.ddd.account.rest.dto.*;
 
 
 /* Tydzień 2, Wzorzec Factory
@@ -14,11 +13,16 @@ Koniec, Tydzień 2, Wzorzec Factory */
 
 public class ResponseFactory {
 
-    public static ResponseInterface createResponse(ResponseEnum type, boolean success, String message, String token) {
+    public static Response createResponse(ResponseEnum type, boolean success, String message, String token) {
+        Response response = new SimpleResponse(message, success);
+        if(token != null) {
+            response = new ResponseTokenDecorator(response, token);
+        }
+
         if (ResponseEnum.LOGIN.equals(type)) {
-            return new LoginResponseDto(success, message, token);
+            return response;
         } else if (ResponseEnum.REGISTER.equals(type)) {
-            return new RegisterResponseDto(success, message, token);
+            return response;
         } else {
             throw new IllegalArgumentException("Invalid response enum type");
         }

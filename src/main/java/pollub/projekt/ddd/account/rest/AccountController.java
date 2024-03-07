@@ -13,9 +13,9 @@ import pollub.projekt.ddd.account.rest.dto.AccountErrorResponse;
 import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
 import pollub.projekt.ddd.account.rest.dto.RegisterRequestDto;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
-import pollub.projekt.ddd.common.patterns.factory.ResponseInterface;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping(path = "/account")
@@ -42,16 +42,16 @@ public class AccountController {
 
 
     @PostMapping(path = "/login", consumes={"application/json"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseInterface> login(@RequestBody @Valid LoginRequestDto request) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid LoginRequestDto request) {
 
-        return ResponseEntity.ok(accountFacade.login(request));
+        return ResponseEntity.ok(accountFacade.login(request).body());
     }
 
     @PostMapping(path = "/register", consumes={"application/json"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<ResponseInterface> register(@RequestBody @Valid RegisterRequestDto request) {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody @Valid RegisterRequestDto request) {
 
-        return ResponseEntity.ok(accountFacade.register(request));
+        return ResponseEntity.ok(accountFacade.register(request).body());
     }
 
 
