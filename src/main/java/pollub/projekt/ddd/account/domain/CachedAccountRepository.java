@@ -2,6 +2,7 @@ package pollub.projekt.ddd.account.domain;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import pollub.projekt.ddd.common.patterns.mediator.LoggerMediator;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -22,12 +23,15 @@ public class CachedAccountRepository implements AccountRepository {
     private final Set<String> cachedLogins;
     private final Map<String, LocalDateTime> cachedRegistedDates;
     private final Map<String, Integer> cachedUserIds;
+    private final LoggerMediator loggerMediator;
 
-    public CachedAccountRepository(AccountRepository accountRepository) {
+    public CachedAccountRepository(AccountRepository accountRepository, LoggerMediator loggerMediator) {
         this.accountRepository = accountRepository;
+        this.loggerMediator = loggerMediator;
         cachedLogins = new HashSet<>();
         cachedRegistedDates = new HashMap<>();
         cachedUserIds = new HashMap<>();
+
     }
 
     @Override
@@ -38,6 +42,7 @@ public class CachedAccountRepository implements AccountRepository {
 
         boolean result = accountRepository.existsByLogin(login);
         if(result) {
+            loggerMediator.notify(this, "Login cached");
             cachedLogins.add(login);
         }
         return result;

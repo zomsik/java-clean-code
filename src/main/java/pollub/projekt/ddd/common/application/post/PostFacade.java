@@ -1,8 +1,6 @@
 package pollub.projekt.ddd.common.application.post;
 
-import pollub.projekt.ddd.post.rest.dto.CreatePostRequestDto;
-import pollub.projekt.ddd.post.rest.dto.CreatePostResponseDto;
-import pollub.projekt.ddd.post.rest.dto.LikeResponseDto;
+import pollub.projekt.ddd.post.rest.dto.*;
 
 import java.util.List;
 
@@ -21,4 +19,6 @@ public interface PostFacade {
     LikeResponseDto dislikePost(Integer postId, String jwt);
 
     CreatePostResponseDto createPost(CreatePostRequestDto createPostRequestDto, String jwt);
+    UpdatePostResponseDto updatePost(UpdatePostRequestDto updatePostRequestDto, String jwt);
+    RestorePostResponseDto restorePost(RestorePostRequestDto restorePostRequestDto, String jwt);
 }

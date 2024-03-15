@@ -13,6 +13,7 @@ import pollub.projekt.ddd.account.rest.dto.AccountErrorResponse;
 import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
 import pollub.projekt.ddd.account.rest.dto.RegisterRequestDto;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
+import pollub.projekt.ddd.common.patterns.mediator.LoggerMediator;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -24,9 +25,8 @@ import java.util.Map;
 @Valid
 @CrossOrigin
 public class AccountController {
-
-
     private final AccountFacade accountFacade;
+    private final LoggerMediator loggerMediator;
 
     @ExceptionHandler(AccountException.class)
     public ResponseEntity<AccountErrorResponseBody> handleAccountException(AccountException ex) {
@@ -50,7 +50,7 @@ public class AccountController {
     @PostMapping(path = "/register", consumes={"application/json"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Map<String, Object>> register(@RequestBody @Valid RegisterRequestDto request) {
-
+        loggerMediator.notify(this, "Register request received");
         return ResponseEntity.ok(accountFacade.register(request).body());
     }
 

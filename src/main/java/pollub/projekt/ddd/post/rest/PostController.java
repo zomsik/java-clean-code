@@ -12,10 +12,7 @@ import pollub.projekt.ddd.common.application.post.PostDto;
 import pollub.projekt.ddd.common.application.post.PostFacade;
 import pollub.projekt.ddd.post.domain.exception.PostErrorResponseBody;
 import pollub.projekt.ddd.post.domain.exception.PostException;
-import pollub.projekt.ddd.post.rest.dto.CreatePostRequestDto;
-import pollub.projekt.ddd.post.rest.dto.CreatePostResponseDto;
-import pollub.projekt.ddd.post.rest.dto.LikeResponseDto;
-import pollub.projekt.ddd.post.rest.dto.PostErrorResponse;
+import pollub.projekt.ddd.post.rest.dto.*;
 
 import java.util.List;
 
@@ -83,6 +80,22 @@ public class PostController {
 
 
         return ResponseEntity.ok(postFacade.createPost(createPostRequestDto, jwt));
+    }
+
+    @PatchMapping(path = "/update-post", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UpdatePostResponseDto> createPost(@RequestBody @Valid UpdatePostRequestDto updatePostRequestDto,
+                                                            @RequestHeader(value = "jwt") String jwt) {
+
+
+        return ResponseEntity.ok(postFacade.updatePost(updatePostRequestDto, jwt));
+    }
+
+    @PatchMapping(path = "/restore-post", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RestorePostResponseDto> restorePost(@RequestBody @Valid RestorePostRequestDto restorePostRequestDto,
+                                                            @RequestHeader(value = "jwt") String jwt) {
+
+
+        return ResponseEntity.ok(postFacade.restorePost(restorePostRequestDto, jwt));
     }
 
 

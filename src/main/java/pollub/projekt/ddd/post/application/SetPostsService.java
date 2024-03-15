@@ -8,9 +8,13 @@ import pollub.projekt.ddd.common.utils.JwtUtil;
 import pollub.projekt.ddd.post.domain.*;
 import pollub.projekt.ddd.post.domain.exception.PostErrorCodes;
 import pollub.projekt.ddd.post.domain.exception.PostException;
-import pollub.projekt.ddd.post.rest.dto.CreatePostRequestDto;
-import pollub.projekt.ddd.post.rest.dto.CreatePostResponseDto;
-import pollub.projekt.ddd.post.rest.dto.LikeResponseDto;
+import pollub.projekt.ddd.post.rest.dto.*;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SetPostsService {
@@ -20,6 +24,7 @@ public class SetPostsService {
     private final PostLikesRepository postLikesRepository;
     private final JwtUtil jwtUtil;
     private final TimeProvider timeProvider;
+    private final List<Memento<Post>> mementoList;
 
     public SetPostsService(AccountFacade accountFacade, PostRepository postRepository,
                            PostLikesRepository postLikesRepository, TimeProvider timeProvider) {
@@ -28,6 +33,7 @@ public class SetPostsService {
         this.postLikesRepository = postLikesRepository;
         this.jwtUtil = JwtUtil.getInstance();
         this.timeProvider = timeProvider;
+        mementoList = new ArrayList<>();
     }
 
     public LikeResponseDto likePost(Integer postId, String jwt) {
@@ -124,6 +130,12 @@ public class SetPostsService {
             p = postRepository.save(p);
 
             if (p.getId() != null ) {
+                PostOriginator originator = new PostOriginator(p, postRepository);
+                try {
+                    mementoList.add(originator.save());
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException(e);
+                }
 
                 return CreatePostResponseDto.builder()
                         .success(true)
@@ -137,6 +149,80 @@ public class SetPostsService {
             throw new PostException(PostErrorCodes.SESSION_EXPIRED);
         }
 
+    }
+
+    public UpdatePostResponseDto updatePost(UpdatePostRequestDto updatePostRequestDto, String jwt) {
+        if (!jwtUtil.valid(jwt)) {
+            throw new PostException(PostErrorCodes.SESSION_EXPIRED);
+        }
+
+        if (updatePostRequestDto.getText() == null || updatePostRequestDto.getText().isEmpty()) {
+            throw new PostException(PostErrorCodes.FIELDS_NOT_FILLED);
+        }
+
+        String user = jwtUtil.getUser(jwt);
+        Integer accountId = accountFacade.getIdByLogin(user);
+        Post post = postRepository.getById(updatePostRequestDto.getPostId()).orElseThrow(() -> new PostException(PostErrorCodes.WRONG_POST_ID));
+
+        if(!Objects.equals(accountId, post.getAccount().getId())) {
+            throw new PostException(PostErrorCodes.INVALID_ACCOUNT_ERROR);
+        }
+
+        post.setText(updatePostRequestDto.getText());
+        postRepository.save(post);
+
+        PostOriginator originator = new PostOriginator(post, postRepository);
+        try {
+            mementoList.add(originator.save());
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return UpdatePostResponseDto.builder()
+                .success(true)
+                .message("Zedytowano post")
+                .build();
+    }
+
+    public RestorePostResponseDto restorePost(RestorePostRequestDto restorePostRequestDto, String jwt) {
+        if (!jwtUtil.valid(jwt)) {
+            throw new PostException(PostErrorCodes.SESSION_EXPIRED);
+        }
+
+        String user = jwtUtil.getUser(jwt);
+        Integer accountId = accountFacade.getIdByLogin(user);
+        Post post = postRepository.getById(restorePostRequestDto.getPostId()).orElseThrow(() -> new PostException(PostErrorCodes.WRONG_POST_ID));
+
+        if(!Objects.equals(accountId, post.getAccount().getId())) {
+            throw new PostException(PostErrorCodes.INVALID_ACCOUNT_ERROR);
+        }
+
+        Memento<Post> memento = getMemento(restorePostRequestDto.getPostId(), restorePostRequestDto.getDate());
+        if(memento == null) {
+            throw new PostException(PostErrorCodes.RESTORE_POINT_NOT_FOUNT);
+        }
+        PostOriginator postOriginator = new PostOriginator(post, postRepository);
+        postOriginator.restore(memento);
+
+        return RestorePostResponseDto.builder()
+                .success(true)
+                .message("Przywrócono post")
+                .build();
+    }
+
+    private Memento<Post> getMemento(Integer postId, LocalDateTime localDateTime) {
+        Memento<Post> selectedMemento = null;
+        Long minDiff = Long.MAX_VALUE;
+        for(var memento : mementoList) {
+            if(memento.getState().getId().equals(postId)) {
+                long diff = Math.abs(ChronoUnit.SECONDS.between(localDateTime, memento.getDateCreated()));
+                if(selectedMemento == null || diff < minDiff) {
+                    minDiff = diff;
+                    selectedMemento = memento;
+                }
+            }
+        }
+        return selectedMemento;
     }
 }
 

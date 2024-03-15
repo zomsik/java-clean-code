@@ -18,7 +18,9 @@ public enum PostErrorCodes {
     ALREADY_LIKED("Komentarz już polubiony", HttpStatus.INTERNAL_SERVER_ERROR ),
     ALREADY_DISLIKED("Komentarz już odlubiony", HttpStatus.INTERNAL_SERVER_ERROR ),
     FIELDS_NOT_FILLED("Brak wypełnienia obowiązkowych pól", HttpStatus.BAD_REQUEST),
-    CREATE_POST_ERROR("Błąd tworzenia postu", HttpStatus.BAD_REQUEST);
+    CREATE_POST_ERROR("Błąd tworzenia postu", HttpStatus.BAD_REQUEST),
+    INVALID_ACCOUNT_ERROR("Brak uprawnień do edycji postu", HttpStatus.FORBIDDEN),
+    RESTORE_POINT_NOT_FOUNT("Nie znaleziono poprzedniej wersji posta", HttpStatus.NOT_FOUND);
 
     private final String errorMessage;
     private final HttpStatus responseCode;

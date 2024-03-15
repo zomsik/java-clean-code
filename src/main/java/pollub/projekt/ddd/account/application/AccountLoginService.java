@@ -9,6 +9,7 @@ import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
 import pollub.projekt.ddd.account.rest.dto.Response;
 import pollub.projekt.ddd.common.patterns.factory.ResponseEnum;
 import pollub.projekt.ddd.common.patterns.factory.ResponseFactory;
+import pollub.projekt.ddd.common.patterns.mediator.LoggerMediator;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 
 @Service
@@ -16,8 +17,10 @@ public class AccountLoginService {
 
     private final JwtUtil jwtUtil;
     private final AccountRepository accountRepository;
+    private final LoggerMediator loggerMediator;
 
-    public AccountLoginService(AccountRepository accountRepository) {
+    public AccountLoginService(AccountRepository accountRepository, LoggerMediator loggerMediator) {
+        this.loggerMediator = loggerMediator;
         this.jwtUtil = JwtUtil.getInstance();
         this.accountRepository = accountRepository;
     }
@@ -29,6 +32,7 @@ public class AccountLoginService {
             if (BCrypt.checkpw(request.getPassword(), passHash)) {
                 String jwt = jwtUtil.createJWT(request.getLogin());
                 if (jwt != null) {
+                    loggerMediator.notify(this, "Login response created successfully");
                     return ResponseFactory.createResponse(ResponseEnum.LOGIN, true, "Zalogowano" , jwt);
 
                 } else {

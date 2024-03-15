@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Post implements Cloneable{
 
     private Integer id;
     private Account account;
@@ -62,5 +62,8 @@ public class Post {
         this.id = id;
     }
 
-
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

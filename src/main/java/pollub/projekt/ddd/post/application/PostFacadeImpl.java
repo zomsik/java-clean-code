@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.common.application.post.PostDto;
 import pollub.projekt.ddd.common.application.post.PostFacade;
-import pollub.projekt.ddd.post.rest.dto.CreatePostRequestDto;
-import pollub.projekt.ddd.post.rest.dto.CreatePostResponseDto;
-import pollub.projekt.ddd.post.rest.dto.LikeResponseDto;
+import pollub.projekt.ddd.post.rest.dto.*;
 
 import java.util.List;
 
@@ -52,5 +50,13 @@ public class PostFacadeImpl implements PostFacade {
         return setPostsService.createPost(createPostRequestDto, jwt);
     }
 
+    @Override
+    public UpdatePostResponseDto updatePost(UpdatePostRequestDto updatePostRequestDto, String jwt) {
+        return setPostsService.updatePost(updatePostRequestDto, jwt);
+    }
 
+    @Override
+    public RestorePostResponseDto restorePost(RestorePostRequestDto restorePostRequestDto, String jwt) {
+        return setPostsService.restorePost(restorePostRequestDto, jwt);
+    }
 }

@@ -4,9 +4,7 @@ import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
 import pollub.projekt.ddd.common.application.post.PostDto;
 import pollub.projekt.ddd.common.utils.JwtUtil;
-import pollub.projekt.ddd.post.domain.CategoryEnum;
-import pollub.projekt.ddd.post.domain.Post;
-import pollub.projekt.ddd.post.domain.PostRepository;
+import pollub.projekt.ddd.post.domain.*;
 import pollub.projekt.ddd.post.domain.exception.PostErrorCodes;
 import pollub.projekt.ddd.post.domain.exception.PostException;
 
@@ -32,20 +30,20 @@ public class GetPostsService {
         if (page == null || postsPerPage == null)
             throw new PostException(PostErrorCodes.NO_FILTER);
 
-        List<PostDto> postList;
+        PostCollection collection;
 
         if (category != null && !category.equals("")) {
-            postList = postRepository
+            collection = new PostCollection(postRepository
                     .getByCategoryAndPageAndPostsOnPage(category, page, postsPerPage)
                     .stream()
                     .map(Post::translateToDto)
-                    .toList();
+                    .toList());
         } else {
-            postList =  postRepository
+            collection = new PostCollection(postRepository
                     .getByPageAndPostsOnPage(page, postsPerPage)
                     .stream()
                     .map(Post::translateToDto)
-                    .toList();
+                    .toList());
         }
 
 
@@ -53,14 +51,15 @@ public class GetPostsService {
             String user = jwtUtil.getUser(jwt);
             Integer accountId = accountFacade.getIdByLogin(user);
 
-            for (PostDto post : postList) {
+            Iterator<PostDto> iterator = collection.createIterator();
+            while(iterator.hasNext()) {
+                PostDto post = iterator.getNext();
                 if (postRepository.isPostLikedByUser(post.getId(), accountId))
                     post.setLiked(true);
             }
-
         }
 
-        return postList;
+        return collection.getSource();
     }
 
     public PostDto getPostById(Integer postId, String jwt) {
