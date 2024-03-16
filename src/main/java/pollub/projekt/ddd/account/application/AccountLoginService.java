@@ -3,8 +3,6 @@ package pollub.projekt.ddd.account.application;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.AccountRepository;
-import pollub.projekt.ddd.account.domain.exception.AccountErrorCodes;
-import pollub.projekt.ddd.account.domain.exception.AccountException;
 import pollub.projekt.ddd.account.rest.dto.LoginRequestDto;
 import pollub.projekt.ddd.account.rest.dto.Response;
 import pollub.projekt.ddd.common.patterns.factory.ResponseEnum;
@@ -40,11 +38,11 @@ public class AccountLoginService {
                     return ResponseFactory.createResponse(ResponseEnum.LOGIN, false, "Błąd logowania", null);
                 }
             } else {
-                throw new AccountException(AccountErrorCodes.WRONG_PASSWORD);
+                return ResponseFactory.createResponse(ResponseEnum.LOGIN, false, "Niepoprawne hasło", null);
             }
 
         } else {
-            throw new AccountException(AccountErrorCodes.USER_NOT_FOUND);
+            return ResponseFactory.createResponse(ResponseEnum.LOGIN, false, "Nie znaleziono użytkownika o takim loginie i haśle", null);
         }
     }
 }
