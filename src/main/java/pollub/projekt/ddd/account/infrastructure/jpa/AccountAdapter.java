@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.account.domain.AccountRepository;
+import pollub.projekt.ddd.account.domain.exception.AccountStorage;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 public class AccountAdapter implements AccountRepository {
 
     private final AccountJpaRepository accountJpaRepository;
+    private final AccountStorage registersStorage;
+
 
     @Override
     public boolean existsByLogin(String login) {
@@ -26,7 +29,10 @@ public class AccountAdapter implements AccountRepository {
 
     @Override
     public Account save(Account account) {
-        return accountJpaRepository.save(account.translate()).translate();
+
+        AccountEntity ae = accountJpaRepository.save(account.translate());
+        registersStorage.add(ae);
+        return ae.translate();
     }
 
     @Override
