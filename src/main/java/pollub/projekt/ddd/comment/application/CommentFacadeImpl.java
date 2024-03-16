@@ -17,24 +17,35 @@ public class CommentFacadeImpl implements CommentFacade {
 
     private final GetCommentsService getCommentsService;
     private final SetCommentLikeService setCommentLikeService;
+
+    private final SetCommentDislikeService setCommentDislikeService;
+
+    private final CreateCommentService createCommentService;
+
     @Override
     public List<CommentDto> getComments(Integer postId, String jwt) {
         return getCommentsService.getComments(postId, jwt);
     }
 
     @Override
-    public LikeResponseDto likeComment(Integer commentId, String jwt) {
-        return setCommentLikeService.likeComment(commentId, jwt);
-    }
+    public LikeResponseDto changeLikeComment(Integer commentId, String jwt, boolean like) {
 
-    @Override
-    public LikeResponseDto dislikeComment(Integer commentId, String jwt) {
-        return setCommentLikeService.dislikeComment(commentId, jwt);
+        /* Tydzień 6, Wzorzec Strategy
+
+
+        Koniec, Tydzień 6, Wzorzec Strategy */
+        SetCommentService commentLikeStrategy;
+        if (like) {
+            commentLikeStrategy = setCommentLikeService;
+        } else {
+            commentLikeStrategy = setCommentDislikeService;
+        }
+        return commentLikeStrategy.changeLikeComment(commentId, jwt);
     }
 
     @Override
     public CreateCommentResponseDto createComment(CreateCommentRequestDto createCommentRequestDto, String jwt) {
-        return setCommentLikeService.createComment(createCommentRequestDto, jwt);
+        return createCommentService.createComment(createCommentRequestDto, jwt);
     }
 
 }

@@ -55,14 +55,14 @@ public class CommentController {
     public ResponseEntity<LikeResponseDto> likeComment(@PathVariable(value="commentId") Integer commentId,
                                                  @RequestHeader(value = "jwt") String jwt) {
 
-        return ResponseEntity.ok(commentFacade.likeComment(commentId, jwt));
+        return ResponseEntity.ok(commentFacade.changeLikeComment(commentId, jwt, true));
     }
 
     @PostMapping(path = "/dislike/{commentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LikeResponseDto> dislikeComment(@PathVariable(value="commentId") Integer commentId,
                                                  @RequestHeader(value = "jwt") String jwt) {
 
-        return ResponseEntity.ok(commentFacade.dislikeComment(commentId, jwt));
+        return ResponseEntity.ok(commentFacade.changeLikeComment(commentId, jwt, false));
     }
 
 

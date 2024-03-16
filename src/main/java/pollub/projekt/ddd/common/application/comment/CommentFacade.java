@@ -9,9 +9,8 @@ import java.util.List;
 public interface CommentFacade {
     List<CommentDto> getComments(Integer postId, String jwt);
 
-    LikeResponseDto likeComment(Integer commentId, String jwt);
+    LikeResponseDto changeLikeComment(Integer commentId, String jwt, boolean like);
 
-    LikeResponseDto dislikeComment(Integer commentId, String jwt);
 
     CreateCommentResponseDto createComment(CreateCommentRequestDto createCommentRequestDto, String jwt);
 
