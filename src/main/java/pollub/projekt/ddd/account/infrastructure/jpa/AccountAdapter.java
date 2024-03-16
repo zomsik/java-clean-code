@@ -1,20 +1,24 @@
 package pollub.projekt.ddd.account.infrastructure.jpa;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.stereotype.Repository;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.account.domain.AccountRepository;
 import pollub.projekt.ddd.account.domain.exception.AccountStorage;
+import pollub.projekt.ddd.common.patterns.visitor.AccountVisitor;
+import pollub.projekt.ddd.common.patterns.visitor.VisitElement;
 
 import java.time.LocalDateTime;
 
 
 @Repository
 @AllArgsConstructor
-public class AccountAdapter implements AccountRepository {
+@Getter
+public class AccountAdapter implements AccountRepository, VisitElement {
 
     private final AccountJpaRepository accountJpaRepository;
-    private final AccountStorage registersStorage;
+    private final AccountStorage registerStorage;
 
 
     @Override
@@ -31,7 +35,7 @@ public class AccountAdapter implements AccountRepository {
     public Account save(Account account) {
 
         AccountEntity ae = accountJpaRepository.save(account.translate());
-        registersStorage.add(ae);
+        registerStorage.add(ae);
         return ae.translate();
     }
 
@@ -43,5 +47,10 @@ public class AccountAdapter implements AccountRepository {
     @Override
     public Integer getIdByLogin(String user) {
         return accountJpaRepository.getIdByLogin(user);
+    }
+
+    @Override
+    public int accept(AccountVisitor accountVisitor) {
+        return accountVisitor.visit(this);
     }
 }

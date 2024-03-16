@@ -1,8 +1,11 @@
 package pollub.projekt.ddd.account.domain;
 
+import lombok.Getter;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pollub.projekt.ddd.common.patterns.mediator.LoggerMediator;
+import pollub.projekt.ddd.common.patterns.visitor.VisitElement;
+import pollub.projekt.ddd.common.patterns.visitor.AccountVisitor;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -18,7 +21,8 @@ import java.util.Set;
 Koniec, Tydzień 4, Wzorzec Proxy */
 @Repository
 @Primary
-public class CachedAccountRepository implements AccountRepository {
+@Getter
+public class CachedAccountRepository implements AccountRepository, VisitElement {
     private final AccountRepository accountRepository;
     private final Set<String> cachedLogins;
     private final Map<String, LocalDateTime> cachedRegistedDates;
@@ -81,5 +85,10 @@ public class CachedAccountRepository implements AccountRepository {
             cachedUserIds.put(user, userId);
         }
         return userId;
+    }
+
+    @Override
+    public int accept(AccountVisitor accountVisitor) {
+        return accountVisitor.visit(this);
     }
 }
