@@ -1,5 +1,6 @@
 package pollub.projekt.ddd.post.application;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Component
 public class SetPostsService {
 
     private final AccountFacade accountFacade;
@@ -196,6 +198,13 @@ public class SetPostsService {
         if(!Objects.equals(accountId, post.getAccount().getId())) {
             throw new PostException(PostErrorCodes.INVALID_ACCOUNT_ERROR);
         }
+
+        /* Tydzień 5, Wzorzec Memento
+
+        Memento przechowuje i pozwala na zapisywanie, i przywracanie stanu obiektu (w tym przypadku przywrócenie sprzed edycji postu).
+        Wzorzec składa się z PostOriginatora zapisującego i przywracającego post oraz Post przechowującego stan obiektu i PostMemento pełniącego rolę Caretakera - umożlwia przywrócenie stanu poprzedniego.
+
+        Koniec, Tydzień 5, Wzorzec Memento */
 
         Memento<Post> memento = getMemento(restorePostRequestDto.getPostId(), restorePostRequestDto.getDate());
         if(memento == null) {

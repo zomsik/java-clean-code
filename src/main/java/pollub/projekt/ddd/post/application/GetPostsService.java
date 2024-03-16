@@ -32,7 +32,7 @@ public class GetPostsService {
 
         PostCollection collection;
 
-        if (category != null && !category.equals("")) {
+        if (category != null && !category.isEmpty()) {
             collection = new PostCollection(postRepository
                     .getByCategoryAndPageAndPostsOnPage(category, page, postsPerPage)
                     .stream()
@@ -50,6 +50,16 @@ public class GetPostsService {
         if (jwtUtil.valid(jwt)) {
             String user = jwtUtil.getUser(jwt);
             Integer accountId = accountFacade.getIdByLogin(user);
+
+
+
+            /* Tydzień 5, Wzorzec Iterator
+
+            Iterator pozwala sekwencyjnie przechodzić pzez całą kolekcję bez eksponowania jej struktury dzięki istnieniu metod takich jak:
+            getNext, hasNext. W ten sposób bezproblemowo możemy przejść przez kolekcję postów, a następnie dla każdego ustawić
+             czy jest już polubiony przez użytkownika, który te posty pobiera.
+
+            Koniec, Tydzień 5, Wzorzec Iterator */
 
             Iterator<PostDto> iterator = collection.createIterator();
             while(iterator.hasNext()) {
@@ -76,8 +86,6 @@ public class GetPostsService {
 
                 if (postRepository.isPostLikedByUser(post.getId(), accountId))
                     post.setLiked(true);
-
-
             }
         }
 
