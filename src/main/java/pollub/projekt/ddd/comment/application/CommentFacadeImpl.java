@@ -31,7 +31,9 @@ public class CommentFacadeImpl implements CommentFacade {
     public LikeResponseDto changeLikeComment(Integer commentId, String jwt, boolean like) {
 
         /* Tydzień 6, Wzorzec Strategy
-
+            Wzorzec Strategy umożliwia zdefiniowanie zachowania obiektu w zależności od potrzeby. Dwie klasy o innym zachowaniu
+        dziedziczą po tej samej klasie abstrakcyjnej, a następnie w zależności od wymaganego zachowania, używana jest ta sama metoda,
+        ale z innej klasy dziedziczącej (z odpowiedniej strategii).
 
         Koniec, Tydzień 6, Wzorzec Strategy */
         SetCommentService commentLikeStrategy;
