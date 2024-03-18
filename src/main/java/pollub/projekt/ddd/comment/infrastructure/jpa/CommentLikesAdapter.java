@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import pollub.projekt.ddd.comment.domain.CommentLike;
 import pollub.projekt.ddd.comment.domain.CommentLikesRepository;
 
-import java.util.List;
+import java.util.LinkedList;
 
 @Repository
 @Primary
@@ -23,7 +23,7 @@ public class CommentLikesAdapter implements CommentLikesRepository {
 
     Koniec, Tydzień 3, Wzorzec Composite */
 
-    private final List<CommentLikesJpaRepository> jpaRepositories;
+    private final LinkedList<CommentLikesJpaRepository> jpaRepositories;
     
     @Override
     public CommentLike save(CommentLike commentLike) {

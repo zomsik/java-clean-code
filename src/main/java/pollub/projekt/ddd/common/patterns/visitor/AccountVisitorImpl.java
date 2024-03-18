@@ -37,7 +37,7 @@ public class AccountVisitorImpl implements AccountVisitor {
 
     @Scheduled(cron= "0/15 * * ? * *")
     public void getCacheSizes() {
-        log.info("Cache sizes = {}", this.cachedAccountRepository.accept(this) + this.accountAdapter.accept(this));
+        log.info("Repository cache sizes = {}", this.cachedAccountRepository.accept(this) + this.accountAdapter.accept(this));
     }
 
 

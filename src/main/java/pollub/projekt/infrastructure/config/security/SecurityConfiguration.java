@@ -49,11 +49,11 @@ public class SecurityConfiguration {
 
         Koniec, Tydzień 3, Wzorzec Bridge */
 
-        UserCreator swaggerUserCreator =new SwaggerUserCreator();
-        AbstractUser swaggerUser =new SwaggerUser(swaggerUserCreator);
+        UserCreator swaggerUserCreator = new SwaggerUserCreator();
+        AbstractUser swaggerUser = new SwaggerUser(swaggerUserCreator);
 
-        UserCreator clientUserCreator =new ClientUserCreator();
-        AbstractUser clientUser =new ClientUser(clientUserCreator);
+        UserCreator clientUserCreator = new ClientUserCreator();
+        AbstractUser clientUser = new ClientUser(clientUserCreator);
 
         return new InMemoryUserDetailsManager(clientUser.createUser(username, password, passwordEncoder()),
                 swaggerUser.createUser(usernameSwagger, passwordSwagger, passwordEncoder()));
