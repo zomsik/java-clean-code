@@ -18,10 +18,12 @@ public class GetPostsService {
     private final AccountFacade accountFacade;
     private final PostRepository postRepository;
     private final JwtUtil jwtUtil;
+    private final PostCountInvoker countInvoker;
 
-    public GetPostsService(AccountFacade accountFacade, PostRepository postRepository) {
+    public GetPostsService(AccountFacade accountFacade, PostRepository postRepository, PostCountInvoker countInvoker) {
         this.accountFacade = accountFacade;
         this.postRepository = postRepository;
+        this.countInvoker = countInvoker;
         this.jwtUtil = JwtUtil.getInstance();
     }
 
@@ -109,12 +111,12 @@ public class GetPostsService {
 
     public Integer countPosts(String category) {
         if (Objects.equals(category, CategoryEnum.NONE.name)) {
-            return postRepository.countPosts();
+            countInvoker.setCountPostCommand(new CountAll(postRepository));
         } else if (Arrays.stream(CategoryEnum.values()).anyMatch(cat -> cat.name().equalsIgnoreCase(category)) ){
-            return postRepository.countPostsByCategory(category);
+            countInvoker.setCountPostCommand(new CountByCategory(postRepository, category));
         } else {
-            return postRepository.countPosts();
+            countInvoker.setCountPostCommand(new CountAll(postRepository));
         }
-
+        return countInvoker.executeCommand();
     }
 }
