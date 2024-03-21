@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Repository;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.account.domain.AccountRepository;
-import pollub.projekt.ddd.account.domain.exception.AccountStorage;
+import pollub.projekt.ddd.account.domain.AccountStorage;
 import pollub.projekt.ddd.common.patterns.visitor.AccountVisitor;
 import pollub.projekt.ddd.common.patterns.visitor.VisitElement;
 
