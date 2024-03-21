@@ -39,7 +39,7 @@ public class SetPostsService {
     }
 
     public LikeResponseDto likePost(Integer postId, String jwt) {
-        if (jwtUtil.valid(jwt)) {
+        /*if (jwtUtil.valid(jwt)) {
             String user = jwtUtil.getUser(jwt);
             Integer accountId = accountFacade.getIdByLogin(user);
 
@@ -69,13 +69,17 @@ public class SetPostsService {
 
         } else {
             throw new PostException(PostErrorCodes.SESSION_EXPIRED);
-        }
+        }*/
+        LikeActionTemplate action = new LikePostAction(accountFacade, postRepository, postLikesRepository, timeProvider);
+        return (LikeResponseDto) action.execute(jwt, postId);
     }
 
 
 
     public LikeResponseDto dislikePost(Integer postId, String jwt) {
-        if (jwtUtil.valid(jwt)) {
+        LikeActionTemplate action = new DissLikePostAction(accountFacade, postRepository, postLikesRepository, timeProvider);
+        return (LikeResponseDto) action.execute(jwt, postId);
+       /* if (jwtUtil.valid(jwt)) {
             String user = jwtUtil.getUser(jwt);
             Integer accountId = accountFacade.getIdByLogin(user);
 
@@ -100,7 +104,8 @@ public class SetPostsService {
 
         } else {
             throw new PostException(PostErrorCodes.SESSION_EXPIRED);
-        }
+        }*/
+
     }
 
 

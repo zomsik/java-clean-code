@@ -18,7 +18,7 @@ public class Account {
     private String username;
     private String password;
     private String email;
-    private String role;
+    private RoleState role;
     private LocalDate birthDate;
     private LocalDateTime registerDate;
 
@@ -28,7 +28,7 @@ public class Account {
                 .username(this.username)
                 .password(this.password)
                 .email(this.email)
-                .role(this.role)
+                .role(String.valueOf(this.role))
                 .birthDate(this.birthDate)
                 .registerDate(this.registerDate)
                 .build();
@@ -45,6 +45,13 @@ public class Account {
                 .id(this.id)
                 .username(this.username)
                 .build();
+    }
+    public void setRole(RoleState role) {
+        this.role = role;
+    }
+
+    public RoleState getRole() {
+        return this.role;
     }
 
     public Account(Integer id) {

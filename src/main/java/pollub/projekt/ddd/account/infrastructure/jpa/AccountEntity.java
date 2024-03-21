@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pollub.projekt.ddd.account.domain.Account;
+import pollub.projekt.ddd.account.domain.RoleStateFactory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,7 +50,7 @@ public class AccountEntity {
                 .username(this.username != null ? this.username : null)
                 .password(this.password != null ? this.password : null)
                 .email(this.email != null ? this.email : null)
-                .role(this.role != null ? this.role : null)
+                .role(RoleStateFactory.getRoleState(this.role)) // Używanie fabryki do przypisania roli
                 .birthDate(this.birthDate != null ? this.birthDate : null)
                 .registerDate(this.registerDate != null ? this.registerDate : null)
                 .build();

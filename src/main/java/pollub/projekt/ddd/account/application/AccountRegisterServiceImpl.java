@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pollub.projekt.ddd.account.domain.Account;
 import pollub.projekt.ddd.account.domain.AccountRepository;
 import pollub.projekt.ddd.account.domain.RoleEnum;
+import pollub.projekt.ddd.account.domain.UserRole;
 import pollub.projekt.ddd.account.domain.exception.AccountErrorCodes;
 import pollub.projekt.ddd.account.domain.exception.AccountException;
 import pollub.projekt.ddd.account.rest.dto.RegisterRequestDto;
@@ -36,7 +37,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
             Account newAcc = accountRepository.save(Account.builder()
                     .username(request.getLogin())
                     .password(hashedPassword)
-                    .role(RoleEnum.USER.id)
+                    .role(new UserRole())
                     .email(request.getEmail())
                     .birthDate(request.getBirthDate())
                     .registerDate(timeProvider.currentDateTime())
@@ -44,7 +45,7 @@ public class AccountRegisterServiceImpl implements AccountRegisterService {
 
             if(newAcc.getId() != null) {
                 String jwt = jwtUtil.createJWT(request.getLogin());
-
+                newAcc.getRole().logAction("Creating an account");
                 if (jwt != null) {
                     return ResponseFactory.createResponse(ResponseEnum.REGISTER, true, "Stworzono konto" , jwt);
                 } else {
