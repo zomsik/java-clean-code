@@ -1,21 +1,19 @@
 package pollub.projekt.ddd.post.application;
 
 import pollub.projekt.ddd.common.application.account.AccountFacade;
-import pollub.projekt.ddd.common.application.time.TimeProvider;
 import pollub.projekt.ddd.post.domain.PostLikesRepository;
 import pollub.projekt.ddd.post.domain.PostRepository;
 import pollub.projekt.ddd.post.domain.exception.PostErrorCodes;
 import pollub.projekt.ddd.post.domain.exception.PostException;
 import pollub.projekt.ddd.post.rest.dto.LikeResponseDto;
 
-public class DissLikePostAction extends LikeActionTemplate{
+public class DislikePostAction extends LikeActionTemplate{
     private final PostLikesRepository postLikesRepository;
-    private final TimeProvider timeProvider;
-    public DissLikePostAction(AccountFacade accountFacade, PostRepository postRepository,
-                          PostLikesRepository postLikesRepository, TimeProvider timeProvider) {
+
+    public DislikePostAction(AccountFacade accountFacade, PostRepository postRepository,
+                             PostLikesRepository postLikesRepository) {
         super(accountFacade, postRepository);
         this.postLikesRepository = postLikesRepository;
-        this.timeProvider = timeProvider;
     }
 
     @Override

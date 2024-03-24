@@ -39,73 +39,13 @@ public class SetPostsService {
     }
 
     public LikeResponseDto likePost(Integer postId, String jwt) {
-        /*if (jwtUtil.valid(jwt)) {
-            String user = jwtUtil.getUser(jwt);
-            Integer accountId = accountFacade.getIdByLogin(user);
-
-            if (postRepository.isPostLikedByUser(postId, accountId)) {
-                throw new PostException(PostErrorCodes.ALREADY_LIKED);
-            }
-
-            PostLike postLike = PostLike.builder()
-                    .post(new Post(postId))
-                    .account(new Account(accountId))
-                    .createDate(timeProvider.currentDateTime())
-                    .build();
-
-            postLike = postLikesRepository.save(postLike);
-
-            if (postLike.getId() != null ) {
-
-                Integer likes = postLikesRepository.getLikesOfPost(postId);
-
-                return LikeResponseDto.builder()
-                        .success(true)
-                        .likes(likes)
-                        .build();
-            } else {
-                throw new PostException(PostErrorCodes.LIKE_ERROR);
-            }
-
-        } else {
-            throw new PostException(PostErrorCodes.SESSION_EXPIRED);
-        }*/
         LikeActionTemplate action = new LikePostAction(accountFacade, postRepository, postLikesRepository, timeProvider);
-        return (LikeResponseDto) action.execute(jwt, postId);
+        return action.execute(jwt, postId);
     }
 
-
-
     public LikeResponseDto dislikePost(Integer postId, String jwt) {
-        LikeActionTemplate action = new DissLikePostAction(accountFacade, postRepository, postLikesRepository, timeProvider);
-        return (LikeResponseDto) action.execute(jwt, postId);
-       /* if (jwtUtil.valid(jwt)) {
-            String user = jwtUtil.getUser(jwt);
-            Integer accountId = accountFacade.getIdByLogin(user);
-
-
-            if (!postRepository.isPostLikedByUser(postId, accountId)) {
-                throw new PostException(PostErrorCodes.ALREADY_DISLIKED);
-            }
-
-            postLikesRepository.deleteByPostIdAndAccountId(postId, accountId);
-
-            if (!postRepository.isPostLikedByUser(postId, accountId)) {
-
-                Integer likes = postLikesRepository.getLikesOfPost(postId);
-
-                return LikeResponseDto.builder()
-                        .success(true)
-                        .likes(likes)
-                        .build();
-            } else {
-                throw new PostException(PostErrorCodes.DISLIKE_ERROR);
-            }
-
-        } else {
-            throw new PostException(PostErrorCodes.SESSION_EXPIRED);
-        }*/
-
+        LikeActionTemplate action = new DislikePostAction(accountFacade, postRepository, postLikesRepository);
+        return action.execute(jwt, postId);
     }
 
 
@@ -226,7 +166,7 @@ public class SetPostsService {
 
     private Memento<Post> getMemento(Integer postId, LocalDateTime localDateTime) {
         Memento<Post> selectedMemento = null;
-        Long minDiff = Long.MAX_VALUE;
+        long minDiff = Long.MAX_VALUE;
         for(var memento : mementoList) {
             if(memento.getState().getId().equals(postId)) {
                 long diff = Math.abs(ChronoUnit.SECONDS.between(localDateTime, memento.getDateCreated()));

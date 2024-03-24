@@ -109,6 +109,12 @@ public class GetPostsService {
 
 
 
+    /* Tydzień 5, Wzorzec Command
+
+    Wzorzec Command pozwala na stworzenie z żądania swoistego obiektu. Pozwala to na parametryzowanie metod przy użyciu różnych żądań, kolejkowanie, itd.
+    Każda komenda implementuje interfejs z metodą execute(), która uruchamia żądanie, odseparowując klientów od odbiorców operacji.
+
+    Koniec, Tydzień 5, Wzorzec Command */
     public Integer countPosts(String category) {
         if (Objects.equals(category, CategoryEnum.NONE.name)) {
             countInvoker.setCountPostCommand(new CountAll(postRepository));

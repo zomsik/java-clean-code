@@ -2,7 +2,6 @@ package pollub.projekt.ddd.post.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pollub.projekt.ddd.account.domain.UserRole;
 import pollub.projekt.ddd.common.application.account.AccountFacade;
 import pollub.projekt.ddd.common.utils.JwtUtil;
 import pollub.projekt.ddd.post.domain.PostRepository;
@@ -22,7 +21,13 @@ public abstract class LikeActionTemplate {
         this.postRepository = postRepository;
     }
 
-    // Metoda szablonowa
+    /* Tydzień 6, Wzorzec Template
+
+    Wzorzec Template pozwala na definiowanie szkieletu algorytmu w klasie bazowej, pozostawiając pewne kroki do implementacji przez klasy pochodne.
+    Umożliwia on klasom pochodnym zmianę konkretnych kroków algorytmu bez zmiany jego struktury ogólnej.
+
+    Koniec, Tydzień 6, Wzorzec Template */
+
     public final LikeResponseDto execute(String jwt, Integer postId, Object... additionalParams) {
         if (!jwtUtil.valid(jwt)) {
             throw new PostException(PostErrorCodes.SESSION_EXPIRED);
