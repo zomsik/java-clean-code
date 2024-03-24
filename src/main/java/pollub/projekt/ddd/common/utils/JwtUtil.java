@@ -56,9 +56,8 @@ public class JwtUtil {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-        if (getDateWithAddedSecondsExpression == null) {
-            getDateWithAddedSecondsExpression = new GetDateWithAddedSecondsExpression(getExpSeconds());
-        }
+        getDateWithAddedSecondsExpression = new GetDateWithAddedSecondsExpression(getExpSeconds());
+
         JwtBuilder builder = Jwts.builder()
                 .setIssuedAt(new LocalDateTime(nowMillis).toDate())
                 .setSubject(subject)

@@ -51,9 +51,9 @@ public class JwtUtilTests implements WithAssertions {
     @Test
     public void createdTokenIsExpired() {
         JwtUtil jwtUtil = JwtUtil.getInstance();
-        jwtUtil.setExpSeconds("1");
+        jwtUtil.setExpSeconds("0");
         String jwt = jwtUtil.createJWT("test-subject");
-        jwtUtil.setExpSeconds("90000");
+        jwtUtil.setExpSeconds("900");
         Assertions.assertFalse(jwtUtil.valid(jwt));
     }
 
