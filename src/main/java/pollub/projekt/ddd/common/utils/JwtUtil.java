@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.Data;
 import org.joda.time.LocalDateTime;
+import pollub.projekt.ddd.common.patterns.interpreter.GetDateWithAddedSecondsExpression;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
@@ -18,7 +19,7 @@ public class JwtUtil {
 
     private String issuer = "ProjectApplicationServer";
 
-    private String expMillis = "90000";
+    private String expSeconds = "900";
 
 
 
@@ -32,6 +33,8 @@ public class JwtUtil {
     Koniec, Tydzień 2, Wzorzec Singleton */
 
     private static JwtUtil instance;
+
+    private static GetDateWithAddedSecondsExpression getDateWithAddedSecondsExpression;
 
     public static JwtUtil getInstance() {
         if (instance == null) {
@@ -53,12 +56,15 @@ public class JwtUtil {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
+        if (getDateWithAddedSecondsExpression == null) {
+            getDateWithAddedSecondsExpression = new GetDateWithAddedSecondsExpression(getExpSeconds());
+        }
         JwtBuilder builder = Jwts.builder()
                 .setIssuedAt(new LocalDateTime(nowMillis).toDate())
                 .setSubject(subject)
                 .setIssuer(issuer)
                 .signWith(signatureAlgorithm, signingKey)
-                .setExpiration(new LocalDateTime(expMillis).toDate());
+                .setExpiration(getDateWithAddedSecondsExpression.interpret());
 
         return builder.compact();
     }
